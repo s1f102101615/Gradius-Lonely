@@ -7,7 +7,7 @@ import type { RoomModel } from '$/commonTypesWithClient/models';
 import { useAtom } from 'jotai';
 import Konva from 'konva';
 import { useEffect, useRef, useState } from 'react';
-import { Circle, Layer, Rect, Stage } from 'react-konva';
+import { Circle, Image, Layer, Rect, Stage } from 'react-konva';
 import { Loading } from 'src/components/Loading/Loading';
 import { apiClient } from 'src/utils/apiClient';
 import { userAtom } from '../atoms/user';
@@ -32,6 +32,12 @@ const Home = () => {
   const [bullet, setBullet] = useState(false);
   const [shottimer, setShottimer] = useState(0);
   const animationRef = useRef<Konva.Animation | null>(null);
+  const [imageBack, setImageBack] = useState(new window.Image());
+  const [imageMiddle, setImageMiddle] = useState(new window.Image());
+  const [middle1, setMiddle1]= useState(450);
+  const [middle2, setMiddle2]= useState(250);
+  const [middle3, setMiddle3]= useState(50);
+
 
   //キーを押したときに実行される関数
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -108,6 +114,19 @@ const Home = () => {
   //再描画
   const fetchRooms = async () => {
     const box = await apiClient.rooms.get();
+
+    const image = new window.Image();
+    image.src = '/images/back.png';
+    image.onload = () => {
+      setImageBack(image);
+    };
+    const image2 = new window.Image();
+      image2.src = '/images/middle.png';
+      image2.onload = () => {
+        setImageMiddle(image2);
+      };
+    
+    console.log('image')
     setRoom(box.body);
     setNowtime(box.body.nowtime);
     setGradius_bullet(JSON.parse(box.body.bullet));
@@ -143,7 +162,7 @@ const Home = () => {
         }
       }
     }, 1000);
-    const autosave = setInterval(async () => {
+    const autosave = setInterval(async () => { 
       await apiClient.rooms.post({
         body: {
           status: 'paused',
@@ -167,6 +186,19 @@ const Home = () => {
       if (frame) {
         const timeDiff = frame.timeDiff / 1000; // ミリ秒を秒に変換
         if (room?.status === 'started') {
+          //背景移動
+          if (middle1 >= imageMiddle.width) {
+            setMiddle1(0);
+          }
+            setMiddle1((before) => before + 64 * timeDiff)
+          if (middle2 >= imageMiddle.width) {
+            setMiddle2(0);
+          }
+            setMiddle2((before) => before + 32 * timeDiff)
+          if (middle3 >= imageMiddle.width) {
+            setMiddle3(0);
+          }
+            setMiddle3((before) => before + 16 * timeDiff)
           //自機移動
           const nowstate = nowkey;
           nowstate[0] = Math.min(Math.max(nowkey[0] + (up ? -3 : 0) + (down ? 3 : 0), 0), 440);
@@ -261,7 +293,23 @@ const Home = () => {
       <div tabIndex={0} style={{ display: 'inline-block', border: 'solid' }}>
         <Stage width={640} height={480}>
           <Layer>
-            <Rect x={nowkey[1]} y={nowkey[0]} width={50} height={40} fill="blue" />
+          {/* 背景処理 */}
+          <Image image={imageBack} />
+          <Image image={imageMiddle} x={-middle1} opacity={0.4}/>
+          {middle1 >= 320 && (
+            <Image image={imageMiddle} x={-middle1 + imageMiddle.width} opacity={0.4}/>
+           )}
+          <Image image={imageMiddle} x={-middle2} opacity={0.3}/>
+          {middle2 >= 320 && (
+            <Image image={imageMiddle} x={-middle2 + imageMiddle.width} opacity={0.4}/>
+           )}
+          <Image image={imageMiddle} x={-middle3} opacity={0.2}/>
+          {middle3 >= 320 && (
+            <Image image={imageMiddle} x={-middle3 + imageMiddle.width} opacity={0.4}/>
+           )}
+          {/* 自機 */}
+            <Rect x={nowkey[1]} y={nowkey[0]} width={50} height={40} fill="white" />
+          {/* 敵 */}
             {enemy.map((state, index) => (
               <Circle
                 key={index}
@@ -271,8 +319,9 @@ const Home = () => {
                 fill={state.monster === 1 ? 'pink' : 'red'}
               />
             ))}
+          {/* 玉 */}
             {gradius_bullet.map((bullet, index) => (
-              <Circle key={index} x={bullet.x} y={bullet.y} radius={10} fill="green" />
+              <Circle key={index} x={bullet.x} y={bullet.y} radius={10} fill="yellow" />
             ))}
           </Layer>
         </Stage>
