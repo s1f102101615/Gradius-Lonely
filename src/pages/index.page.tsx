@@ -308,13 +308,13 @@ const Home = () => {
           {middle1 >= 320 && (
             <Image image={imageMiddle} x={-middle1 + imageMiddle.width} opacity={0.4}/>
            )}
-          <Image image={imageMiddle} x={-middle2} opacity={0.3}/>
+          <Image image={imageMiddle} x={-middle2} opacity={0.3} />
           {middle2 >= 320 && (
-            <Image image={imageMiddle} x={-middle2 + imageMiddle.width} opacity={0.4}/>
+            <Image image={imageMiddle} x={-middle2 + imageMiddle.width} opacity={0.3}/>
            )}
           <Image image={imageMiddle} x={-middle3} opacity={0.2}/>
           {middle3 >= 320 && (
-            <Image image={imageMiddle} x={-middle3 + imageMiddle.width} opacity={0.4}/>
+            <Image image={imageMiddle} x={-middle3 + imageMiddle.width} opacity={0.2}/>
            )}
           {/* 自機 */}
             <Rect x={nowkey[1]} y={nowkey[0]} width={50} height={40} fill="white" />
