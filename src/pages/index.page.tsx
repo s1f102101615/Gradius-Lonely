@@ -193,15 +193,15 @@ const Home = () => {
           if (middle1 >= imageMiddle.width) {
             setMiddle1(0);
           }
-            setMiddle1((before) => before + 64 * timeDiff)
+            setMiddle1((before) => before + 320 * timeDiff)
           if (middle2 >= imageMiddle.width) {
             setMiddle2(0);
           }
-            setMiddle2((before) => before + 32 * timeDiff)
+            setMiddle2((before) => before + 160 * timeDiff)
           if (middle3 >= imageMiddle.width) {
             setMiddle3(0);
           }
-            setMiddle3((before) => before + 16 * timeDiff)
+            setMiddle3((before) => before + 80 * timeDiff)
           //自機移動
           const nowstate = nowkey;
           nowstate[0] = Math.min(Math.max(nowkey[0] + (up ? -3 : 0) + (down ? 3 : 0), 0), 440);
