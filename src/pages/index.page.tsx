@@ -35,8 +35,8 @@ const Home = () => {
   const [imageBack, setImageBack] = useState(new window.Image());
   const [imageMiddle, setImageMiddle] = useState(new window.Image());
   const [middle1, setMiddle1]= useState(450);
-  const [middle2, setMiddle2]= useState(250);
-  const [middle3, setMiddle3]= useState(50);
+  const [middle2, setMiddle2]= useState(0);
+  const [middle3, setMiddle3]= useState(200);
 
 
   //キーを押したときに実行される関数
@@ -163,6 +163,8 @@ const Home = () => {
       }
     }, 1000);
     const autosave = setInterval(async () => { 
+      const pack = [middle1,middle2,middle3]
+      const middle = pack.map((value) => Math.round(value));
       await apiClient.rooms.post({
         body: {
           status: 'paused',
@@ -170,6 +172,7 @@ const Home = () => {
           myposition: nowkey,
           bullet: JSON.stringify(gradius_bullet),
           enemy: JSON.stringify(enemy),
+          background: middle,
         },
       });
     }, 1000);
@@ -258,6 +261,8 @@ const Home = () => {
 
   //ポーズと再開の処理ポーズ   ブラウザバックとリロード時にも起動するように今後する。
   const pause = async () => {
+    const pack = [middle1,middle2,middle3]
+    const middle = pack.map((value) => Math.round(value));
     await apiClient.rooms.post({
       body: {
         status: 'paused',
@@ -265,6 +270,7 @@ const Home = () => {
         myposition: nowkey,
         bullet: JSON.stringify(gradius_bullet),
         enemy: JSON.stringify(enemy),
+        background: middle
       },
     });
     fetchRooms();
@@ -272,6 +278,8 @@ const Home = () => {
   };
 
   const start = async () => {
+    const pack = [middle1,middle2,middle3]
+    const middle = pack.map((value) => Math.round(value));
     // 次の行のnowtime赤線が出るから一応書いておいた
     await apiClient.rooms.post({
       body: {
@@ -280,6 +288,7 @@ const Home = () => {
         myposition: nowkey,
         bullet: JSON.stringify(gradius_bullet),
         enemy: JSON.stringify(enemy),
+        background: middle
       },
     });
     fetchRooms();

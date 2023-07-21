@@ -18,6 +18,7 @@ CREATE TABLE "Room" (
     "myposition" INTEGER[],
     "bullet" TEXT NOT NULL,
     "enemy" TEXT NOT NULL,
+    "background" INTEGER[],
 
     CONSTRAINT "Room_pkey" PRIMARY KEY ("userId")
 );

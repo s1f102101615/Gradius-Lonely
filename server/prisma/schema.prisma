@@ -24,6 +24,7 @@ model Room {
   myposition Int[]
   bullet     String
   enemy      String
+  background Int[]
 }
 
 model UserOnRoom {

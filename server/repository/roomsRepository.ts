@@ -17,6 +17,7 @@ export const roomsRepository = {
         myposition: room.myposition,
         bullet: room.bullet,
         enemy: room.enemy,
+        background: room.background,
       },
       create: {
         roomId: room.id,
@@ -27,6 +28,7 @@ export const roomsRepository = {
         myposition: room.myposition,
         bullet: room.bullet,
         enemy: room.enemy,
+        background: room.background,
       },
     });
   },
@@ -47,6 +49,7 @@ export const roomsRepository = {
           myposition: [0, 0],
           bullet: '[]',
           enemy: '[]',
+          background: [450,0,200]
         },
       });
       return await roomsRepository.findRoom(userId);
@@ -60,6 +63,7 @@ export const roomsRepository = {
         myposition: room.myposition,
         bullet: room.bullet,
         enemy: room.enemy,
+        background: room.background,
       };
     }
   },

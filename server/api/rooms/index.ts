@@ -12,6 +12,7 @@ export type Methods = {
       myposition: RoomModel['myposition'];
       bullet: RoomModel['bullet'];
       enemy: RoomModel['enemy'];
+      background: RoomModel['background'];
     };
   };
 };

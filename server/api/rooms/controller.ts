@@ -12,7 +12,8 @@ export default defineController(() => ({
       body.nowtime,
       body.myposition,
       body.bullet,
-      body.enemy
+      body.enemy,
+      body.background
     ),
   }),
 }));
