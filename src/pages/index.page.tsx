@@ -169,8 +169,8 @@ const Home = () => {
         if (room?.status === 'started') {
           //自機移動
           const nowstate = nowkey;
-          nowstate[0] = nowkey[0] + (up ? -3 : 0) + (down ? 3 : 0);
-          nowstate[1] = nowkey[1] + (left ? -3 : 0) + (right ? 3 : 0);
+          nowstate[0] = Math.min(Math.max(nowkey[0] + (up ? -3 : 0) + (down ? 3 : 0), 0), 440);
+          nowstate[1] = Math.min(Math.max(nowkey[1] + (left ? -3 : 0) + (right ? 3 : 0), 0), 590);
           setNowkey(nowstate);
           //弾発射
           setShottimer(shottimer + timeDiff);
