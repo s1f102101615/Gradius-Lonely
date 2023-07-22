@@ -126,7 +126,9 @@ const Home = () => {
         setImageMiddle(image2);
       };
     
-    console.log('image')
+    setMiddle1(box.body.background[0]);
+    setMiddle2(box.body.background[1]);
+    setMiddle3(box.body.background[2]);
     setRoom(box.body);
     setNowtime(box.body.nowtime);
     setGradius_bullet(JSON.parse(box.body.bullet));
@@ -298,6 +300,7 @@ const Home = () => {
   if (!user) return <Loading visible />;
   return (
     <>
+      <div style={{ textAlign: 'center' }} >
       <p>gradius{nowkey}</p>
       <div tabIndex={0} style={{ display: 'inline-block', border: 'solid' }}>
         <Stage width={640} height={480}>
@@ -340,6 +343,7 @@ const Home = () => {
       <div>
         {nowtime[0]}秒{nowtime[1] / 2}wave
       </div>
+    </div>
     </>
   );
 };
