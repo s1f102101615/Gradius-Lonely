@@ -319,7 +319,7 @@ const Home = () => {
           {middle3 >= 320 && (
             <Image image={imageMiddle} x={-middle3 + imageMiddle.width} opacity={0.2}/>
            )}
-          {/* 自機 */}
+          {/* 自機早めに変えたい */}
             <Rect x={nowkey[1]} y={nowkey[0]} width={50} height={40} fill="white" />
           {/* 敵 */}
             {enemy.map((state, index) => (
