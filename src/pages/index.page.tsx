@@ -328,7 +328,7 @@ const Home = () => {
                 x={state.x}
                 y={state.y}
                 radius={20}
-                fill={state.monster === 1 ? 'pink' : 'red'}
+                fill={state.monster === 1 ? 'pink' : state.monster === 2 ? 'white':'red'}
               />
             ))}
           {/* 玉 */}

@@ -17,7 +17,7 @@ export const roomUsecase = {
       id: roomIdParser.parse(randomUUID()),
       userId: user,
       status,
-      scenario: ['4', '0', '6', '1', '4', '0', '3', '1', '3', '1', '3', '0'],
+      scenario: ['4', '2', '6', '2', '4', '0', '3', '1', '3', '1', '3', '0'],
       nowtime,
       myposition,
       bullet,

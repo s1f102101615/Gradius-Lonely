@@ -1,3 +1,5 @@
+
+
 /* eslint-disable complexity */
 const updateEnemy = (
   enemies: { x: number; y: number; speedX: number; monster: number; status: number }[],
@@ -45,6 +47,14 @@ const updateEnemy = (
                     : 35 * timeDiff)
                 : enemy.y,
           };
+        case 2:
+          return {
+            ...enemy,
+            status: roomStatus === 'paused' ? enemy.status : enemy.status + timeDiff,
+            x: enemy.x + (roomStatus === 'paused' ? 0 : enemy.speedX * timeDiff),
+            //8が上下の速度 1.5が上下の振幅
+            y: enemy.y + (roomStatus === 'paused' ? 0 : Math.sin(8*(enemy.status + timeDiff)) * 1.5),
+          }
         default:
           return {
             ...enemy,
