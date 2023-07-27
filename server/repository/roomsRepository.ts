@@ -44,7 +44,7 @@ export const roomsRepository = {
           roomId: roomIdParser.parse(randomUUID()),
           userId,
           status: 'started',
-          scenario: ['4', '2', '6', '2', '4', '0', '3', '1', '3', '1', '3', '0'],
+          scenario: ['3', '0', '6', '0', '6', '0', '4', '1', '2', '1', '2', '2', '3', '1', '2', '1'],
           nowtime: [0, 0],
           myposition: [0, 0],
           bullet: '[]',
