@@ -25,6 +25,8 @@ model Room {
   bullet     String
   enemy      String
   background Int[]
+  powerup    Int[]
+  cellcount  Int
 }
 
 model UserOnRoom {

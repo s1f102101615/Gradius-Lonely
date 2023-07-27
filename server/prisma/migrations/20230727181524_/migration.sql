@@ -19,6 +19,8 @@ CREATE TABLE "Room" (
     "bullet" TEXT NOT NULL,
     "enemy" TEXT NOT NULL,
     "background" INTEGER[],
+    "powerup" INTEGER[],
+    "cellcount" INTEGER NOT NULL,
 
     CONSTRAINT "Room_pkey" PRIMARY KEY ("userId")
 );

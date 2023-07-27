@@ -13,7 +13,9 @@ export default defineController(() => ({
       body.myposition,
       body.bullet,
       body.enemy,
-      body.background
+      body.background,
+      body.powerup,
+      body.cellcount
     ),
   }),
 }));

@@ -13,6 +13,8 @@ export type Methods = {
       bullet: RoomModel['bullet'];
       enemy: RoomModel['enemy'];
       background: RoomModel['background'];
+      powerup: RoomModel['powerup'];
+      cellcount: RoomModel['cellcount'];
     };
   };
 };

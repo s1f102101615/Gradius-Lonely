@@ -1,3 +1,4 @@
+import type { UserId } from '$/commonTypesWithClient/branded';
 import type { RoomModel } from '$/commonTypesWithClient/models';
 import { roomsRepository } from '$/repository/roomsRepository';
 import { roomIdParser } from '$/service/idParsers';
@@ -11,7 +12,9 @@ export const roomUsecase = {
     myposition: RoomModel['myposition'],
     bullet: RoomModel['bullet'],
     enemy: RoomModel['enemy'],
-    background: RoomModel['background']
+    background: RoomModel['background'],
+    powerup: RoomModel['powerup'],
+    cellcount: RoomModel['cellcount']
   ) => {
     const newRoom: RoomModel = {
       id: roomIdParser.parse(randomUUID()),
@@ -23,9 +26,25 @@ export const roomUsecase = {
       bullet,
       enemy,
       background,
+      powerup,
+      cellcount,
     };
     await roomsRepository.save(newRoom);
 
     return newRoom;
   },
-};
+  powerup: async (
+    userId: UserId,
+  ) => {
+    const room = await roomsRepository.findRoom(userId);
+    
+    const powerposition = ((room.cellcount - 1) % 6);
+    if (powerposition > 0 && room.powerup[powerposition] === 1 || room.cellcount === 0) {
+      return [room.powerup, room.cellcount];
+    }
+    room.powerup[powerposition] += 1
+    room.cellcount = 0
+    await roomsRepository.save(room);
+    return [room.powerup, room.cellcount];  
+},
+}

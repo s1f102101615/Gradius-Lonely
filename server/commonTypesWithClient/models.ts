@@ -24,4 +24,6 @@ export type RoomModel = {
   bullet: string;
   enemy: string;
   background: number[];
+  powerup: number[];
+  cellcount: number;
 };

@@ -37,10 +37,12 @@ const Home = () => {
   const [middle1, setMiddle1]= useState(450);
   const [middle2, setMiddle2]= useState(0);
   const [middle3, setMiddle3]= useState(200);
+  const [powerup, setPowerup] = useState<number[]>([0, 0, 0, 0, 0, 0]);
+  const [cellcount, setCellcount] = useState<number>(0);
 
 
   //キーを押したときに実行される関数
-  const handleKeyDown = (event: KeyboardEvent) => {
+  const handleKeyDown = async (event: KeyboardEvent) => {
     switch (event.code) {
       case 'ArrowUp':
         setUp(true);
@@ -57,6 +59,11 @@ const Home = () => {
       case 'KeyZ':
         setBullet(true);
         break;
+      case 'KeyC':
+        await apiClient.powerup.get();
+        rendRooms();
+        break;
+        
     }
   };
 
@@ -111,6 +118,12 @@ const Home = () => {
     });
   };
 
+  const rendRooms = async () => {
+    const box = await apiClient.rooms.get();
+    setPowerup(box.body.powerup);
+    setCellcount(box.body.cellcount);
+
+  }
   //再描画
   const fetchRooms = async () => {
     const box = await apiClient.rooms.get();
@@ -134,6 +147,8 @@ const Home = () => {
     setGradius_bullet(JSON.parse(box.body.bullet));
     setEnemy(JSON.parse(box.body.enemy));
     setNowkey(box.body.myposition);
+    setPowerup(box.body.powerup);
+    setCellcount(box.body.cellcount);
     //start後加速している 敵と球が一種類だから可能(多分後で変える)
     setGradius_bullet((prev) =>
       prev.map((bullet) => ({
@@ -175,6 +190,8 @@ const Home = () => {
           bullet: JSON.stringify(gradius_bullet),
           enemy: JSON.stringify(enemy),
           background: middle,
+          powerup,
+          cellcount,
         },
       });
     }, 1000);
@@ -206,8 +223,8 @@ const Home = () => {
             setMiddle3((before) => before + 80 * timeDiff)
           //自機移動
           const nowstate = nowkey;
-          nowstate[0] = Math.min(Math.max(nowkey[0] + (up ? -3 : 0) + (down ? 3 : 0), 0), 440);
-          nowstate[1] = Math.min(Math.max(nowkey[1] + (left ? -3 : 0) + (right ? 3 : 0), 0), 590);
+          nowstate[0] = Math.min(Math.max(nowkey[0] + (up ? -1 : 0) + (down ? 1 : 0), 0), 440);
+          nowstate[1] = Math.min(Math.max(nowkey[1] + (left ? -1 : 0) + (right ? 1 : 0), 0), 590);
           setNowkey(nowstate);
           //弾発射
           setShottimer(shottimer + timeDiff);
@@ -272,7 +289,9 @@ const Home = () => {
         myposition: nowkey,
         bullet: JSON.stringify(gradius_bullet),
         enemy: JSON.stringify(enemy),
-        background: middle
+        background: middle,
+        powerup,
+        cellcount,
       },
     });
     fetchRooms();
@@ -290,7 +309,9 @@ const Home = () => {
         myposition: nowkey,
         bullet: JSON.stringify(gradius_bullet),
         enemy: JSON.stringify(enemy),
-        background: middle
+        background: middle,
+        powerup,
+        cellcount,
       },
     });
     fetchRooms();
@@ -307,12 +328,18 @@ const Home = () => {
         myposition: [0, 0],
         bullet: JSON.stringify([]),
         enemy: JSON.stringify([]),
-        background: middle
+        background: middle,
+        powerup,
+        cellcount,
       },
     });
     fetchRooms();
     console.log('restart');
   };
+
+  const cellplus = async () => {
+    setCellcount(cellcount + 1) 
+  }
 
   if (!user) return <Loading visible />;
   return (
@@ -358,6 +385,8 @@ const Home = () => {
       <div onClick={pause}>pause</div>
       <div onClick={start}>start</div>
       <div onClick={restart}>restart</div>
+      <div>{powerup}</div>
+      <div onClick={cellplus}>{cellcount}</div>
       <div>
         {nowtime[0]}秒{nowtime[1] / 2}wave
       </div>
