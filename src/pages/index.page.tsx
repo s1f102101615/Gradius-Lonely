@@ -297,6 +297,23 @@ const Home = () => {
     console.log('start');
   };
 
+  const restart = async () => {
+    const pack = [middle1,middle2,middle3]
+    const middle = pack.map((value) => Math.round(value));
+    await apiClient.rooms.post({
+      body: {
+        status: 'paused',
+        nowtime: [0, 0],
+        myposition: [0, 0],
+        bullet: JSON.stringify([]),
+        enemy: JSON.stringify([]),
+        background: middle
+      },
+    });
+    fetchRooms();
+    console.log('restart');
+  };
+
   if (!user) return <Loading visible />;
   return (
     <>
@@ -340,6 +357,7 @@ const Home = () => {
       </div>
       <div onClick={pause}>pause</div>
       <div onClick={start}>start</div>
+      <div onClick={restart}>restart</div>
       <div>
         {nowtime[0]}秒{nowtime[1] / 2}wave
       </div>
