@@ -60,8 +60,10 @@ const Home = () => {
         setBullet(true);
         break;
       case 'KeyC':
-        await apiClient.powerup.get();
-        rendRooms();
+        if (!event.repeat) {
+          await apiClient.powerup.get();
+          rendRooms();
+        }
         break;
         
     }
@@ -223,8 +225,8 @@ const Home = () => {
             setMiddle3((before) => before + 80 * timeDiff)
           //自機移動
           const nowstate = nowkey;
-          nowstate[0] = Math.min(Math.max(nowkey[0] + (up ? -1 : 0) + (down ? 1 : 0), 0), 440);
-          nowstate[1] = Math.min(Math.max(nowkey[1] + (left ? -1 : 0) + (right ? 1 : 0), 0), 590);
+          nowstate[0] = Math.min(Math.max(nowkey[0] + (up ? -powerup[0]-1 : 0) + (down ? powerup[0]+1 : 0), 0), 440);
+          nowstate[1] = Math.min(Math.max(nowkey[1] + (left ? -powerup[0]-1 : 0) + (right ? powerup[0]+1 : 0), 0), 590);
           setNowkey(nowstate);
           //弾発射
           setShottimer(shottimer + timeDiff);
