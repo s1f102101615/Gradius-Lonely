@@ -33,18 +33,19 @@ export const roomUsecase = {
 
     return newRoom;
   },
-  powerup: async (
-    userId: UserId,
-  ) => {
+  powerup: async (userId: UserId) => {
     const room = await roomsRepository.findRoom(userId);
-    
-    const powerposition = ((room.cellcount - 1) % 6);
-    if (powerposition > 0 && room.powerup[powerposition] === 1 || room.cellcount === 0) {
+
+    const powerposition = (room.cellcount - 1) % 6;
+    if (
+      (powerposition > 0 && powerposition !== 4 && room.powerup[powerposition] === 1) ||
+      room.cellcount === 0
+    ) {
       return [room.powerup, room.cellcount];
     }
-    room.powerup[powerposition] += 1
-    room.cellcount = 0
+    room.powerup[powerposition] += 1;
+    room.cellcount = 0;
     await roomsRepository.save(room);
-    return [room.powerup, room.cellcount];  
-},
-}
+    return [room.powerup, room.cellcount];
+  },
+};
