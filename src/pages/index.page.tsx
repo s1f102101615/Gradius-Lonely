@@ -22,7 +22,7 @@ const Home = () => {
   >([]);
   const [room, setRoom] = useState<RoomModel>();
   const [nowtime, setNowtime] = useState([0, 0]);
-  const [gradius_bullet, setGradius_bullet] = useState<{ x: number; y: number; speedX: number }[]>(
+  const [gradius_bullet, setGradius_bullet] = useState<{ x: number; y: number; speedX: number ; speedY:number ; status:number}[]>(
     []
   );
   const [up, setUp] = useState(false);
@@ -30,6 +30,8 @@ const Home = () => {
   const [left, setLeft] = useState(false);
   const [right, setRight] = useState(false);
   const [bullet, setBullet] = useState(false);
+  const [missile, setMissile] = useState(false);
+  const [missiletimer, setMissiletimer] = useState(0);
   const [shottimer, setShottimer] = useState(0);
   const animationRef = useRef<Konva.Animation | null>(null);
   const [imageBack, setImageBack] = useState(new window.Image());
@@ -64,6 +66,9 @@ const Home = () => {
           rendRooms();
         }
         break;
+      case 'KeyX':
+        setMissile(true);
+        break;
     }
   };
 
@@ -84,6 +89,9 @@ const Home = () => {
         break;
       case 'KeyZ':
         setBullet(false);
+        break;
+      case 'KeyX':
+        setMissile(false);
         break;
     }
   };
@@ -235,12 +243,36 @@ const Home = () => {
           setShottimer(shottimer + timeDiff);
           if (bullet) {
             if (shottimer > 0.3) {
-              setGradius_bullet((prevGradius_bullet) => [
-                ...prevGradius_bullet,
-                { x: nowkey[1] + 54, y: nowkey[0] + 20, speedX: 1000 },
-              ]);
+              setGradius_bullet((prevGradius_bullet) => {
+                if (powerup[2] === 1) {
+                  return [
+                    ...prevGradius_bullet,
+                    { x: nowkey[1] + 54, y: nowkey[0] + 20, speedX: 1000, speedY: 0, status: 0 },
+                    { x: nowkey[1] + 54, y: nowkey[0] + 10, speedX: 1000, speedY: -1000, status: 0 },
+                  ];
+                } else {
+                  return [
+                    ...prevGradius_bullet,
+                    { x: nowkey[1] + 54, y: nowkey[0] + 20, speedX: 1000, speedY: 0, status: 0 },
+                  ];
+                }
+              });
+              
               setShottimer(0);
             }
+          }
+          //ミサイル発射
+          if (powerup[1] === 1) {
+          setMissiletimer(missiletimer + timeDiff);
+          if (missile) {
+            if (missiletimer > 0.3) {
+              setGradius_bullet((prevGradius_bullet) => [
+                ...prevGradius_bullet,
+                { x: nowkey[1] + 54, y: nowkey[0] + 40, speedX: 800, speedY: 800 , status: 1 },
+              ]);
+              setMissiletimer(0);
+            }
+          }
           }
         }
 
@@ -251,9 +283,11 @@ const Home = () => {
               .map((bullet) => ({
                 ...bullet,
                 x: bullet.x + bullet.speedX * timeDiff,
+                y: bullet.y + bullet.speedY * timeDiff,
                 speedX: room?.status === 'paused' ? 0 : bullet.speedX, // pause中はspeedXを0にする
+                speedY: room?.status === 'paused' ? 0 : bullet.speedY, // pause中はspeedYを0にする
               }))
-              .filter((bullet) => bullet.x < 640) // 画面の右端に到達していない弾のみをフィルタリング
+              .filter((bullet) => bullet.x < 640 && bullet.y < 480) // 画面の右端に到達していない弾のみをフィルタリング
         );
         // 敵の動き
         setEnemy((prev) => updateEnemy(prev, room?.status, timeDiff, nowkey));
@@ -382,7 +416,7 @@ const Home = () => {
               ))}
               {/* 玉 */}
               {gradius_bullet.map((bullet, index) => (
-                <Circle key={index} x={bullet.x} y={bullet.y} radius={10} fill="yellow" />
+                <Circle key={index} x={bullet.x} y={bullet.y} radius={10} fill={bullet.status === 0 ? 'yellow' : 'green'} />
               ))}
               {/* パワーアップ欄 */}
               <Rect
