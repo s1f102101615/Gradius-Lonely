@@ -34,12 +34,11 @@ const Home = () => {
   const animationRef = useRef<Konva.Animation | null>(null);
   const [imageBack, setImageBack] = useState(new window.Image());
   const [imageMiddle, setImageMiddle] = useState(new window.Image());
-  const [middle1, setMiddle1]= useState(450);
-  const [middle2, setMiddle2]= useState(0);
-  const [middle3, setMiddle3]= useState(200);
+  const [middle1, setMiddle1] = useState(450);
+  const [middle2, setMiddle2] = useState(0);
+  const [middle3, setMiddle3] = useState(200);
   const [powerup, setPowerup] = useState<number[]>([0, 0, 0, 0, 0, 0]);
   const [cellcount, setCellcount] = useState<number>(0);
-
 
   //キーを押したときに実行される関数
   const handleKeyDown = async (event: KeyboardEvent) => {
@@ -65,7 +64,6 @@ const Home = () => {
           rendRooms();
         }
         break;
-        
     }
   };
 
@@ -124,8 +122,7 @@ const Home = () => {
     const box = await apiClient.rooms.get();
     setPowerup(box.body.powerup);
     setCellcount(box.body.cellcount);
-
-  }
+  };
   //再描画
   const fetchRooms = async () => {
     const box = await apiClient.rooms.get();
@@ -136,11 +133,11 @@ const Home = () => {
       setImageBack(image);
     };
     const image2 = new window.Image();
-      image2.src = '/images/middle.png';
-      image2.onload = () => {
-        setImageMiddle(image2);
-      };
-    
+    image2.src = '/images/middle.png';
+    image2.onload = () => {
+      setImageMiddle(image2);
+    };
+
     setMiddle1(box.body.background[0]);
     setMiddle2(box.body.background[1]);
     setMiddle3(box.body.background[2]);
@@ -181,8 +178,8 @@ const Home = () => {
         }
       }
     }, 1000);
-    const autosave = setInterval(async () => { 
-      const pack = [middle1,middle2,middle3]
+    const autosave = setInterval(async () => {
+      const pack = [middle1, middle2, middle3];
       const middle = pack.map((value) => Math.round(value));
       await apiClient.rooms.post({
         body: {
@@ -214,19 +211,25 @@ const Home = () => {
           if (middle1 >= imageMiddle.width) {
             setMiddle1(0);
           }
-            setMiddle1((before) => before + 320 * timeDiff)
+          setMiddle1((before) => before + 320 * timeDiff);
           if (middle2 >= imageMiddle.width) {
             setMiddle2(0);
           }
-            setMiddle2((before) => before + 160 * timeDiff)
+          setMiddle2((before) => before + 160 * timeDiff);
           if (middle3 >= imageMiddle.width) {
             setMiddle3(0);
           }
-            setMiddle3((before) => before + 80 * timeDiff)
+          setMiddle3((before) => before + 80 * timeDiff);
           //自機移動
           const nowstate = nowkey;
-          nowstate[0] = Math.min(Math.max(nowkey[0] + (up ? -powerup[0]-1 : 0) + (down ? powerup[0]+1 : 0), 0), 416);
-          nowstate[1] = Math.min(Math.max(nowkey[1] + (left ? -powerup[0]-1 : 0) + (right ? powerup[0]+1 : 0), 0), 590);
+          nowstate[0] = Math.min(
+            Math.max(nowkey[0] + (up ? -powerup[0] - 1 : 0) + (down ? powerup[0] + 1 : 0), 0),
+            416
+          );
+          nowstate[1] = Math.min(
+            Math.max(nowkey[1] + (left ? -powerup[0] - 1 : 0) + (right ? powerup[0] + 1 : 0), 0),
+            590
+          );
           setNowkey(nowstate);
           //弾発射
           setShottimer(shottimer + timeDiff);
@@ -282,7 +285,7 @@ const Home = () => {
 
   //ポーズと再開の処理ポーズ   ブラウザバックとリロード時にも起動するように今後する。
   const pause = async () => {
-    const pack = [middle1,middle2,middle3]
+    const pack = [middle1, middle2, middle3];
     const middle = pack.map((value) => Math.round(value));
     await apiClient.rooms.post({
       body: {
@@ -301,7 +304,7 @@ const Home = () => {
   };
 
   const start = async () => {
-    const pack = [middle1,middle2,middle3]
+    const pack = [middle1, middle2, middle3];
     const middle = pack.map((value) => Math.round(value));
     // 次の行のnowtime赤線が出るから一応書いておいた
     await apiClient.rooms.post({
@@ -321,7 +324,7 @@ const Home = () => {
   };
 
   const restart = async () => {
-    const pack = [middle1,middle2,middle3]
+    const pack = [middle1, middle2, middle3];
     const middle = pack.map((value) => Math.round(value));
     await apiClient.rooms.post({
       body: {
@@ -340,128 +343,163 @@ const Home = () => {
   };
 
   const cellplus = async () => {
-    setCellcount(cellcount + 1) 
-  }
+    setCellcount(cellcount + 1);
+  };
 
   if (!user) return <Loading visible />;
   return (
     <>
-      <div style={{ textAlign: 'center' }} >
-      <p>gradius{nowkey}</p>
-      <div tabIndex={0} style={{ display: 'inline-block', border: 'solid' }}>
-        <Stage width={640} height={480}>
-          <Layer>
-          {/* 背景処理 */}
-          <Image image={imageBack} />
-          <Image image={imageMiddle} x={-middle1} opacity={0.4}/>
-          {middle1 >= 320 && (
-            <Image image={imageMiddle} x={-middle1 + imageMiddle.width} opacity={0.4}/>
-           )}
-          <Image image={imageMiddle} x={-middle2} opacity={0.3} />
-          {middle2 >= 320 && (
-            <Image image={imageMiddle} x={-middle2 + imageMiddle.width} opacity={0.3}/>
-           )}
-          <Image image={imageMiddle} x={-middle3} opacity={0.2}/>
-          {middle3 >= 320 && (
-            <Image image={imageMiddle} x={-middle3 + imageMiddle.width} opacity={0.2}/>
-           )}
-          {/* 自機早めに変えたい */}
-            <Rect x={nowkey[1]} y={nowkey[0]} width={50} height={40} fill="white" />
-          {/* 敵 */}
-            {enemy.map((state, index) => (
-              <Circle
-                key={index}
-                x={state.x}
-                y={state.y}
-                radius={20}
-                fill={state.monster === 1 ? 'pink' : state.monster === 2 ? 'white':'red'}
+      <div style={{ textAlign: 'center' }}>
+        <p>gradius{nowkey}</p>
+        <div tabIndex={0} style={{ display: 'inline-block', border: 'solid' }}>
+          <Stage width={640} height={480}>
+            <Layer>
+              {/* 背景処理 */}
+              <Image image={imageBack} />
+              <Image image={imageMiddle} x={-middle1} opacity={0.4} />
+              {middle1 >= 320 && (
+                <Image image={imageMiddle} x={-middle1 + imageMiddle.width} opacity={0.4} />
+              )}
+              <Image image={imageMiddle} x={-middle2} opacity={0.3} />
+              {middle2 >= 320 && (
+                <Image image={imageMiddle} x={-middle2 + imageMiddle.width} opacity={0.3} />
+              )}
+              <Image image={imageMiddle} x={-middle3} opacity={0.2} />
+              {middle3 >= 320 && (
+                <Image image={imageMiddle} x={-middle3 + imageMiddle.width} opacity={0.2} />
+              )}
+              {/* 自機早めに変えたい */}
+              <Rect x={nowkey[1]} y={nowkey[0]} width={50} height={40} fill="white" />
+              {/* 敵 */}
+              {enemy.map((state, index) => (
+                <Circle
+                  key={index}
+                  x={state.x}
+                  y={state.y}
+                  radius={20}
+                  fill={state.monster === 1 ? 'pink' : state.monster === 2 ? 'white' : 'red'}
+                />
+              ))}
+              {/* 玉 */}
+              {gradius_bullet.map((bullet, index) => (
+                <Circle key={index} x={bullet.x} y={bullet.y} radius={10} fill="yellow" />
+              ))}
+              {/* パワーアップ欄 */}
+              <Rect
+                key={1}
+                x={80}
+                y={458}
+                width={75}
+                height={20}
+                fill={(cellcount - 1) % 6 === 0 ? 'black' : '#C0C0C0'}
               />
-            ))}
-          {/* 玉 */}  
-            {gradius_bullet.map((bullet, index) => (
-              <Circle key={index} x={bullet.x} y={bullet.y} radius={10} fill="yellow" />
-            ))}
-          {/* パワーアップ欄 */}
-            <Rect key={1} x={80} y={458} width={75} height={20} fill="#C0C0C0" />
-            <Rect key={2} x={160} y={458} width={75} height={20} fill="#C0C0C0" />
-            <Rect key={3} x={240} y={458} width={75} height={20} fill="#C0C0C0" />
-            <Rect key={4} x={320} y={458} width={75} height={20} fill="#C0C0C0" />
-            <Rect key={5} x={400} y={458} width={75} height={20} fill="#C0C0C0" />
-            <Rect key={6} x={480} y={458} width={75} height={20} fill="#C0C0C0" />
-            {/* ボーダー */}
-            <Line
-                points={[
-                    80, 458,
-                    555, 458,
-                    555, 478,
-                    80, 478,
-                    80, 458
-                ]}
+              <Rect
+                key={2}
+                x={160}
+                y={458}
+                width={75}
+                height={20}
+                fill={(cellcount - 1) % 6 === 1 ? 'black' : '#C0C0C0'}
+              />
+              <Rect
+                key={3}
+                x={240}
+                y={458}
+                width={75}
+                height={20}
+                fill={(cellcount - 1) % 6 === 2 ? 'black' : '#C0C0C0'}
+              />
+              <Rect
+                key={4}
+                x={320}
+                y={458}
+                width={75}
+                height={20}
+                fill={(cellcount - 1) % 6 === 3 ? 'black' : '#C0C0C0'}
+              />
+              <Rect
+                key={5}
+                x={400}
+                y={458}
+                width={75}
+                height={20}
+                fill={(cellcount - 1) % 6 === 4 ? 'black' : '#C0C0C0'}
+              />
+              <Rect
+                key={6}
+                x={480}
+                y={458}
+                width={75}
+                height={20}
+                fill={(cellcount - 1) % 6 === 5 ? 'black' : '#C0C0C0'}
+              />
+              {/* ボーダー */}
+              <Line
+                points={[80, 458, 555, 458, 555, 478, 80, 478, 80, 458]}
                 closed
                 stroke="gray"
                 strokeWidth={3}
-            />
-            <Rect x={155} y={458} width={5} height={20} fill="gray" />
-            <Rect x={235} y={458} width={5} height={20} fill="gray" />
-            <Rect x={315} y={458} width={5} height={20} fill="gray" />
-            <Rect x={395} y={458} width={5} height={20} fill="gray" />
-            <Rect x={475} y={458} width={5} height={20} fill="gray" />
-            {/* テキスト */}
-            <Text
+              />
+              <Rect x={155} y={458} width={5} height={20} fill="gray" />
+              <Rect x={235} y={458} width={5} height={20} fill="gray" />
+              <Rect x={315} y={458} width={5} height={20} fill="gray" />
+              <Rect x={395} y={458} width={5} height={20} fill="gray" />
+              <Rect x={475} y={458} width={5} height={20} fill="gray" />
+              {/* テキスト */}
+              <Text
                 x={83} // テキストのX座標（中央に配置するための位置）
                 y={463} // テキストのY座標（中央に配置するための位置）
-                fill="black" // テキストの色を黒色に設定
+                fill={(cellcount - 1) % 6 === 0 ? 'white' : 'black'} // テキストの色を黒色に設定
                 fontSize={13} // テキストのフォントサイズを指定
                 text="SPEEDUP" // テキストの内容を指定
-            />
-            <Text
+              />
+              <Text
                 x={167} // テキストのX座標（中央に配置するための位置）
                 y={463} // テキストのY座標（中央に配置するための位置）
-                fill="black" // テキストの色を黒色に設定
+                fill={(cellcount - 1) % 6 === 1 ? 'white' : 'black'} // テキストの色を黒色に設定
                 fontSize={13} // テキストのフォントサイズを指定
                 text="MISSILE" // テキストの内容を指定
-            />
-            <Text
+              />
+              <Text
                 x={246} // テキストのX座標（中央に配置するための位置）
                 y={463} // テキストのY座標（中央に配置するための位置）
-                fill="black" // テキストの色を黒色に設定
+                fill={(cellcount - 1) % 6 === 2 ? 'white' : 'black'} // テキストの色を黒色に設定
                 fontSize={13} // テキストのフォントサイズを指定
                 text="DOUBLE" // テキストの内容を指定
-            />
-            <Text
+              />
+              <Text
                 x={333} // テキストのX座標（中央に配置するための位置）
                 y={463} // テキストのY座標（中央に配置するための位置）
-                fill="black" // テキストの色を黒色に設定
+                fill={(cellcount - 1) % 6 === 3 ? 'white' : 'black'} // テキストの色を黒色に設定
                 fontSize={13} // テキストのフォントサイズを指定
                 text="LASER" // テキストの内容を指定
-            />
-            <Text
+              />
+              <Text
                 x={407} // テキストのX座標（中央に配置するための位置）
                 y={463} // テキストのY座標（中央に配置するための位置）
-                fill="black" // テキストの色を黒色に設定
+                fill={(cellcount - 1) % 6 === 4 ? 'white' : 'black'} // テキストの色を黒色に設定
                 fontSize={13} // テキストのフォントサイズを指定
                 text="OPTION" // テキストの内容を指定
-            />
-            <Text
+              />
+              <Text
                 x={513} // テキストのX座標（中央に配置するための位置）
                 y={463} // テキストのY座標（中央に配置するための位置）
-                fill="black" // テキストの色を黒色に設定
+                fill={(cellcount - 1) % 6 === 5 ? 'white' : 'black'} // テキストの色を黒色に設定
                 fontSize={13} // テキストのフォントサイズを指定
                 text="?" // テキストの内容を指定
-            />
-
-          </Layer>
-        </Stage>
+              />
+            </Layer>
+          </Stage>
+        </div>
+        <div onClick={pause}>pause</div>
+        <div onClick={start}>start</div>
+        <div onClick={restart}>restart</div>
+        <div>{powerup}</div>
+        <div onClick={cellplus}>{cellcount}</div>
+        <div>
+          {nowtime[0]}秒{nowtime[1] / 2}wave
+        </div>
       </div>
-      <div onClick={pause}>pause</div>
-      <div onClick={start}>start</div>
-      <div onClick={restart}>restart</div>
-      <div>{powerup}</div>
-      <div onClick={cellplus}>{cellcount}</div>
-      <div>
-        {nowtime[0]}秒{nowtime[1] / 2}wave
-      </div>
-    </div>
     </>
   );
 };
