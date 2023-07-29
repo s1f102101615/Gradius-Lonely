@@ -7,7 +7,7 @@ import type { RoomModel } from '$/commonTypesWithClient/models';
 import { useAtom } from 'jotai';
 import Konva from 'konva';
 import { useEffect, useRef, useState } from 'react';
-import { Circle, Image, Layer, Rect, Stage } from 'react-konva';
+import { Circle, Image, Layer, Line, Rect, Stage, Text } from 'react-konva';
 import { Loading } from 'src/components/Loading/Loading';
 import { apiClient } from 'src/utils/apiClient';
 import { userAtom } from '../atoms/user';
@@ -225,7 +225,7 @@ const Home = () => {
             setMiddle3((before) => before + 80 * timeDiff)
           //自機移動
           const nowstate = nowkey;
-          nowstate[0] = Math.min(Math.max(nowkey[0] + (up ? -powerup[0]-1 : 0) + (down ? powerup[0]+1 : 0), 0), 440);
+          nowstate[0] = Math.min(Math.max(nowkey[0] + (up ? -powerup[0]-1 : 0) + (down ? powerup[0]+1 : 0), 0), 416);
           nowstate[1] = Math.min(Math.max(nowkey[1] + (left ? -powerup[0]-1 : 0) + (right ? powerup[0]+1 : 0), 0), 590);
           setNowkey(nowstate);
           //弾発射
@@ -377,10 +377,79 @@ const Home = () => {
                 fill={state.monster === 1 ? 'pink' : state.monster === 2 ? 'white':'red'}
               />
             ))}
-          {/* 玉 */}
+          {/* 玉 */}  
             {gradius_bullet.map((bullet, index) => (
               <Circle key={index} x={bullet.x} y={bullet.y} radius={10} fill="yellow" />
             ))}
+          {/* パワーアップ欄 */}
+            <Rect key={1} x={80} y={458} width={75} height={20} fill="#C0C0C0" />
+            <Rect key={2} x={160} y={458} width={75} height={20} fill="#C0C0C0" />
+            <Rect key={3} x={240} y={458} width={75} height={20} fill="#C0C0C0" />
+            <Rect key={4} x={320} y={458} width={75} height={20} fill="#C0C0C0" />
+            <Rect key={5} x={400} y={458} width={75} height={20} fill="#C0C0C0" />
+            <Rect key={6} x={480} y={458} width={75} height={20} fill="#C0C0C0" />
+            {/* ボーダー */}
+            <Line
+                points={[
+                    80, 458,
+                    555, 458,
+                    555, 478,
+                    80, 478,
+                    80, 458
+                ]}
+                closed
+                stroke="gray"
+                strokeWidth={3}
+            />
+            <Rect x={155} y={458} width={5} height={20} fill="gray" />
+            <Rect x={235} y={458} width={5} height={20} fill="gray" />
+            <Rect x={315} y={458} width={5} height={20} fill="gray" />
+            <Rect x={395} y={458} width={5} height={20} fill="gray" />
+            <Rect x={475} y={458} width={5} height={20} fill="gray" />
+            {/* テキスト */}
+            <Text
+                x={83} // テキストのX座標（中央に配置するための位置）
+                y={463} // テキストのY座標（中央に配置するための位置）
+                fill="black" // テキストの色を黒色に設定
+                fontSize={13} // テキストのフォントサイズを指定
+                text="SPEEDUP" // テキストの内容を指定
+            />
+            <Text
+                x={167} // テキストのX座標（中央に配置するための位置）
+                y={463} // テキストのY座標（中央に配置するための位置）
+                fill="black" // テキストの色を黒色に設定
+                fontSize={13} // テキストのフォントサイズを指定
+                text="MISSILE" // テキストの内容を指定
+            />
+            <Text
+                x={246} // テキストのX座標（中央に配置するための位置）
+                y={463} // テキストのY座標（中央に配置するための位置）
+                fill="black" // テキストの色を黒色に設定
+                fontSize={13} // テキストのフォントサイズを指定
+                text="DOUBLE" // テキストの内容を指定
+            />
+            <Text
+                x={333} // テキストのX座標（中央に配置するための位置）
+                y={463} // テキストのY座標（中央に配置するための位置）
+                fill="black" // テキストの色を黒色に設定
+                fontSize={13} // テキストのフォントサイズを指定
+                text="LASER" // テキストの内容を指定
+            />
+            <Text
+                x={407} // テキストのX座標（中央に配置するための位置）
+                y={463} // テキストのY座標（中央に配置するための位置）
+                fill="black" // テキストの色を黒色に設定
+                fontSize={13} // テキストのフォントサイズを指定
+                text="OPTION" // テキストの内容を指定
+            />
+            <Text
+                x={513} // テキストのX座標（中央に配置するための位置）
+                y={463} // テキストのY座標（中央に配置するための位置）
+                fill="black" // テキストの色を黒色に設定
+                fontSize={13} // テキストのフォントサイズを指定
+                text="?" // テキストの内容を指定
+            />
+
           </Layer>
         </Stage>
       </div>
