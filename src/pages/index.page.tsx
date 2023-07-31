@@ -251,13 +251,13 @@ const Home = () => {
                 if (powerup[2] === 1) {
                   return [
                     ...prevGradius_bullet,
-                    { x: nowkey[1] + 54, y: nowkey[0] + 20, speedX: 1000, speedY: 0, status: 0 },
+                    { x: nowkey[1] + 54, y: nowkey[0] + 20, speedX: 2000, speedY: 0, status: 0 },
                     { x: nowkey[1] + 54, y: nowkey[0] + 10, speedX: 1000, speedY: -1000, status: 0 },
                   ];
                 } else {
                   return [
                     ...prevGradius_bullet,
-                    { x: nowkey[1] + 54, y: nowkey[0] + 20, speedX: 1000, speedY: 0, status: 0 },
+                    { x: nowkey[1] + 54, y: nowkey[0] + 20, speedX: 2000, speedY: 0, status: 0 },
                   ];
                 }
               });
