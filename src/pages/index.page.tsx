@@ -163,7 +163,7 @@ const Home = () => {
     setGradius_bullet((prev) =>
       prev.map((bullet) => ({
         ...bullet,
-        speedX: 1000, // speedXを元の値に戻す
+        speedX: 2000, // speedXを元の値に戻す
       }))
     );
   };
