@@ -15,7 +15,8 @@ export default defineController(() => ({
       body.enemy,
       body.background,
       body.powerup,
-      body.cellcount
+      body.cellcount,
+      body.score,
     ),
   }),
 }));

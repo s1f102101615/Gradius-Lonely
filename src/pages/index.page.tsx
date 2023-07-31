@@ -41,7 +41,6 @@ const Home = () => {
   const [middle3, setMiddle3] = useState(200);
   const [powerup, setPowerup] = useState<number[]>([0, 0, 0, 0, 0, 0]);
   const [cellcount, setCellcount] = useState<number>(0);
-
   const [score, setScore] = useState(0);
 
   //キーを押したときに実行される関数
@@ -118,9 +117,10 @@ const Home = () => {
         const collision = gradius_bullet.some((bullet) => checkCollision(bullet, enemy));
         if (collision) {
           // 接触した敵は除外する
-          setGradius_bullet((prevBullets) =>
-            prevBullets.filter((bullet) => !checkCollision(bullet, enemy))
-          );
+          setGradius_bullet((prevBullets) => {
+            setScore(score + 100);
+            return prevBullets.filter((bullet) => !checkCollision(bullet, enemy));
+          });
           return false;
         }
         return true;
@@ -158,6 +158,7 @@ const Home = () => {
     setNowkey(box.body.myposition);
     setPowerup(box.body.powerup);
     setCellcount(box.body.cellcount);
+    setScore(box.body.score);
     //start後加速している 敵と球が一種類だから可能(多分後で変える)
     setGradius_bullet((prev) =>
       prev.map((bullet) => ({
@@ -201,6 +202,7 @@ const Home = () => {
           background: middle,
           powerup,
           cellcount,
+          score,
         },
       });
     }, 1000);
@@ -333,6 +335,7 @@ const Home = () => {
         background: middle,
         powerup,
         cellcount,
+        score,
       },
     });
     fetchRooms();
@@ -353,6 +356,7 @@ const Home = () => {
         background: middle,
         powerup,
         cellcount,
+        score,
       },
     });
     fetchRooms();
@@ -372,6 +376,7 @@ const Home = () => {
         background: middle,
         powerup,
         cellcount,
+        score,
       },
     });
     fetchRooms();
@@ -535,6 +540,7 @@ const Home = () => {
         <div>
           {nowtime[0]}秒{nowtime[1] / 2}wave
         </div>
+        <div>{score}</div>
       </div>
     </>
   );

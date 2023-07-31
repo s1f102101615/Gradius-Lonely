@@ -27,6 +27,7 @@ model Room {
   background Int[]
   powerup    Int[]
   cellcount  Int
+  score      Int
 }
 
 model UserOnRoom {

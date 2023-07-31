@@ -15,6 +15,7 @@ export type Methods = {
       background: RoomModel['background'];
       powerup: RoomModel['powerup'];
       cellcount: RoomModel['cellcount'];
+      score: RoomModel['score'];
     };
   };
 };

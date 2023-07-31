@@ -14,7 +14,8 @@ export const roomUsecase = {
     enemy: RoomModel['enemy'],
     background: RoomModel['background'],
     powerup: RoomModel['powerup'],
-    cellcount: RoomModel['cellcount']
+    cellcount: RoomModel['cellcount'],
+    score: RoomModel['score'],
   ) => {
     const newRoom: RoomModel = {
       id: roomIdParser.parse(randomUUID()),
@@ -28,6 +29,7 @@ export const roomUsecase = {
       background,
       powerup,
       cellcount,
+      score,
     };
     await roomsRepository.save(newRoom);
 

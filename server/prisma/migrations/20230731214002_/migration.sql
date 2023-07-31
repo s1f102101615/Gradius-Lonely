@@ -21,6 +21,7 @@ CREATE TABLE "Room" (
     "background" INTEGER[],
     "powerup" INTEGER[],
     "cellcount" INTEGER NOT NULL,
+    "score" INTEGER NOT NULL,
 
     CONSTRAINT "Room_pkey" PRIMARY KEY ("userId")
 );

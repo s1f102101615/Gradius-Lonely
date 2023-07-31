@@ -20,6 +20,7 @@ export const roomsRepository = {
         background: room.background,
         powerup: room.powerup,
         cellcount: room.cellcount,
+        score: room.score,
       },
       create: {
         roomId: room.id,
@@ -33,6 +34,7 @@ export const roomsRepository = {
         background: room.background,
         powerup: room.powerup,
         cellcount: room.cellcount,
+        score: room.score,
       },
     });
   },
@@ -56,6 +58,7 @@ export const roomsRepository = {
           background: [450,0,200],
           powerup: [0,0,0,0,0,0],
           cellcount: 0,
+          score: 0,
         },
       });
       return await roomsRepository.findRoom(userId);
@@ -72,6 +75,7 @@ export const roomsRepository = {
         background: room.background,
         powerup: room.powerup,
         cellcount: room.cellcount,
+        score: room.score,
       };
     }
   },
