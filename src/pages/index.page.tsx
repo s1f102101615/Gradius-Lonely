@@ -166,7 +166,8 @@ const Home = () => {
     setGradius_bullet((prev) =>
       prev.map((bullet) => ({
         ...bullet,
-        speedX: 2000, // speedXを元の値に戻す
+        speedX: bullet.speedX,
+        speedY: bullet.speedY,
       }))
     );
   };
@@ -289,10 +290,10 @@ const Home = () => {
             prev
               .map((bullet) => ({
                 ...bullet,
-                x: bullet.x + bullet.speedX * timeDiff,
-                y: bullet.y + bullet.speedY * timeDiff,
-                speedX: room?.status === 'paused' ? 0 : bullet.speedX, // pause中はspeedXを0にする
-                speedY: room?.status === 'paused' ? 0 : bullet.speedY, // pause中はspeedYを0にする
+                x: room?.status === 'paused' ? bullet.x : bullet.x + bullet.speedX * timeDiff,
+                y: room?.status === 'paused' ? bullet.y : bullet.y + bullet.speedY * timeDiff,
+                speedX: bullet.speedX, // pause中はspeedXを0にする
+                speedY: bullet.speedY, // pause中はspeedYを0にする
               }))
               .filter((bullet) => bullet.x < 640 && bullet.y < 480) // 画面の右端に到達していない弾のみをフィルタリング
         );
