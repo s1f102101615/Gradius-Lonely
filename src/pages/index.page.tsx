@@ -99,10 +99,13 @@ const Home = () => {
 
   //敵と球が接触しているか確かめる関数
   function checkCollision(
-    bullet: { x: number; y: number; speedX: number },
+    bullet: { x: number; y: number; speedX: number; speedY: number; status: number },
     enemy: { x: number; y: number; speedX: number }
   ) {
-    const bullet_radius = 10;
+    const bullet_radius = 5;
+    if (bullet.status === 1) {
+      const bullet_radius = 10;
+    }
     const enemy_radius = 22.5;
     const dx = bullet.x - enemy.x;
     const dy = bullet.y - enemy.y;
@@ -423,7 +426,7 @@ const Home = () => {
               ))}
               {/* 玉 */}
               {gradius_bullet.map((bullet, index) => (
-                <Circle key={index} x={bullet.x} y={bullet.y} radius={10} fill={bullet.status === 0 ? 'yellow' : 'green'} />
+                <Circle key={index} x={bullet.x} y={bullet.y} radius={bullet.status === 0 ? 5 : 10} fill={bullet.status === 0 ? 'yellow' : 'green'} />
               ))}
               {/* パワーアップ欄 */}
               <Rect
