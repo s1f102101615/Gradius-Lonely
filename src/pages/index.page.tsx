@@ -102,9 +102,9 @@ const Home = () => {
     bullet: { x: number; y: number; speedX: number; speedY: number; status: number },
     enemy: { x: number; y: number; speedX: number }
   ) {
-    const bullet_radius = 5;
+    let bullet_radius = 5;
     if (bullet.status === 1) {
-      const bullet_radius = 10;
+      bullet_radius = 10;
     }
     const enemy_radius = 22.5;
     const dx = bullet.x - enemy.x;
@@ -255,7 +255,7 @@ const Home = () => {
                   return [
                     ...prevGradius_bullet,
                     { x: nowkey[1] + 54, y: nowkey[0] + 20, speedX: 2000, speedY: 0, status: 0 },
-                    { x: nowkey[1] + 54, y: nowkey[0] + 10, speedX: 1000, speedY: -1000, status: 0 },
+                    { x: nowkey[1] + 54, y: nowkey[0] + 10, speedX: 1500, speedY: -1500, status: 0 },
                   ];
                 } else {
                   return [
