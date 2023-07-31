@@ -42,6 +42,8 @@ const Home = () => {
   const [powerup, setPowerup] = useState<number[]>([0, 0, 0, 0, 0, 0]);
   const [cellcount, setCellcount] = useState<number>(0);
 
+  const [score, setScore] = useState(0);
+
   //キーを押したときに実行される関数
   const handleKeyDown = async (event: KeyboardEvent) => {
     switch (event.code) {
