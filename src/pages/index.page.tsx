@@ -236,10 +236,10 @@ const Home = () => {
             setMiddle3(0);
           }
           setMiddle3((before) => before + 80 * timeDiff);
-          //自機移動
+          //自機移動 上下制限
           const nowstate = nowkey;
           nowstate[0] = Math.min(
-            Math.max(nowkey[0] + (up ? -powerup[0] - 1 : 0) + (down ? powerup[0] + 1 : 0), 0),
+            Math.max(nowkey[0] + (up ? -powerup[0] - 1 : 0) + (down ? powerup[0] + 1 : 0), 20),
             416
           );
           nowstate[1] = Math.min(
