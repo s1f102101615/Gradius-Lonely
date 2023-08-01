@@ -36,6 +36,7 @@ const Home = () => {
   const animationRef = useRef<Konva.Animation | null>(null);
   const [imageBack, setImageBack] = useState(new window.Image());
   const [imageMiddle, setImageMiddle] = useState(new window.Image());
+  const [imageShip, setImageShip] = useState(new window.Image());
   const [middle1, setMiddle1] = useState(450);
   const [middle2, setMiddle2] = useState(0);
   const [middle3, setMiddle3] = useState(200);
@@ -149,6 +150,11 @@ const Home = () => {
     image2.src = '/images/middle.png';
     image2.onload = () => {
       setImageMiddle(image2);
+    };
+    const ship = new window.Image();
+    ship.src = '/images/battleship.png';
+    ship.onload = () => {
+      setImageShip(ship);
     };
 
     setMiddle1(box.body.background[0]);
@@ -414,7 +420,8 @@ const Home = () => {
                 <Image image={imageMiddle} x={-middle3 + imageMiddle.width} opacity={0.2} />
               )}
               {/* 自機早めに変えたい */}
-              <Rect x={nowkey[1]} y={nowkey[0]} width={50} height={40} fill="white" />
+              <Image image={imageShip} x={nowkey[1]} y={nowkey[0]} width={50} height={40} scaleX={-1.2} scaleY={1.2} offsetX={43} offsetY={7} />
+              {/* <Rect x={nowkey[1]} y={nowkey[0]} width={50} height={40} fill='white'/> */}
               {/* 敵 */}
               {enemy.map((state, index) => (
                 <Circle
