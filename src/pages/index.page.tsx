@@ -546,7 +546,7 @@ const Home = () => {
                 y={0} // テキストのY座標（中央に配置するための位置）
                 fill= 'white' // テキストの色を黒色に設定
                 fontSize={22} // テキストのフォントサイズを指定
-                text= {'score: ' +  score} // テキストの内容を指定
+                text= {`score: ${   score}`} // テキストの内容を指定
               />
             </Layer>
           </Stage>

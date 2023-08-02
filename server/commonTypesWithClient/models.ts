@@ -26,4 +26,5 @@ export type RoomModel = {
   background: number[];
   powerup: number[];
   cellcount: number;
+  score: number;
 };
