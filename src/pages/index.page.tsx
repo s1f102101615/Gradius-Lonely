@@ -38,6 +38,7 @@ const Home = () => {
   const [imageMiddle, setImageMiddle] = useState(new window.Image());
   const [imageShip, setImageShip] = useState(new window.Image());
   const [imageShip1, setImageShip1] = useState(new window.Image());
+  const [imageShip2, setImageShip2] = useState(new window.Image());
   const [middle1, setMiddle1] = useState(450);
   const [middle2, setMiddle2] = useState(0);
   const [middle3, setMiddle3] = useState(200);
@@ -162,6 +163,12 @@ const Home = () => {
     ship1.src = '/images/battleship1.png';
     ship1.onload = () => {
       setImageShip1(ship1);
+    };
+
+    const ship2 = new window.Image();
+    ship2.src = '/images/battleship2.png';
+    ship2.onload = () => {
+      setImageShip2(ship2);
     };
 
 
@@ -428,7 +435,7 @@ const Home = () => {
                 <Image image={imageMiddle} x={-middle3 + imageMiddle.width} opacity={0.2} />
               )}
               {/* 自機早めに変えたい */}
-              <Image image={down && !up ? imageShip1:imageShip} x={nowkey[1]} y={nowkey[0]} width={50} height={40} scaleX={1.4} scaleY={1.4} offsetX={10} offsetY={5} />
+              <Image image={down && !up ? imageShip1:up && !down ?imageShip2:imageShip} x={nowkey[1]} y={nowkey[0]} width={50} height={40} scaleX={1.4} scaleY={1.4} offsetX={10} offsetY={5} />
               {/* <Rect x={nowkey[1]} y={nowkey[0]} width={50} height={40} fill='white'/> */}
               {/* 敵 */}
               {enemy.map((state, index) => (
